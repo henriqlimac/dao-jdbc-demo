@@ -4,6 +4,9 @@ import model.entities.Department;
 import model.entities.Seller;
 
 void main() {
+    Scanner scanner = new Scanner(System.in);
+    int id;
+
     SellerDao sellerDao = DaoFactory.createSellerDao();
 
     System.out.println("TESTE 1: seller findById");
@@ -47,4 +50,14 @@ void main() {
     sellerDao.update(seller);
     System.out.println("Updated, new ID = " + seller.getId());
     System.out.println();
+
+    System.out.println("TESTE 6: seller deleteById");
+    System.out.println("Enter ID for delete test or just press enter to skip: ");
+    id = scanner.nextInt();
+
+    if (id != 0) {
+        sellerDao.deleteById(id);
+        System.out.println("Delete completed");
+    }
+    scanner.close();
 }
