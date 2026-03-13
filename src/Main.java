@@ -11,9 +11,18 @@ void main() {
     System.out.println();
 
     System.out.println("TESTE 2: seller findByDepartment");
-    List<Seller> sellers = sellerDao.findByDepartment(2);
+    List<Seller> sellersDepartment = sellerDao.findByDepartment(2);
 
-    for (Seller s : sellers) {
-        System.out.println(s);
+    for (Seller sd : sellersDepartment) {
+        System.out.println(sd);
     }
+    System.out.println();
+
+    System.out.println("TESTE 3: seller findAll");
+    List<Seller> sellersAll = sellerDao.findAll();
+
+    for (Seller sa : sellersAll) {
+        System.out.println(sa);
+    }
+    System.out.println();
 }
