@@ -1,10 +1,11 @@
-import model.entities.Department;
+import model.dao.DaoFactory;
+import model.dao.SellerDao;
 import model.entities.Seller;
 
 void main() {
-    Department obj = new Department(1, "Books");
+    SellerDao sellerDao = DaoFactory.createSellerDao();
 
-    Seller seller = new Seller(40, "John", "bob@gmail.com", new Date(), 3000.0, obj);
+    Seller seller = sellerDao.findById(2);
 
     System.out.println(seller);
 }
