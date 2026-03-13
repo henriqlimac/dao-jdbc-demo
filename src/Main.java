@@ -38,6 +38,13 @@ void main() {
             department
     );
     sellerDao.insert(newSeller);
-
     System.out.println("Inserted, new ID = " + newSeller.getId());
+    System.out.println();
+
+    System.out.println("TESTE 5: seller update");
+    seller = sellerDao.findById(1);
+    seller.setName("Henrique Lima");
+    sellerDao.update(seller);
+    System.out.println("Updated, new ID = " + seller.getId());
+    System.out.println();
 }
