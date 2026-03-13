@@ -1,5 +1,6 @@
 import model.dao.DaoFactory;
 import model.dao.SellerDao;
+import model.entities.Department;
 import model.entities.Seller;
 
 void main() {
@@ -25,4 +26,18 @@ void main() {
         System.out.println(sa);
     }
     System.out.println();
+
+    System.out.println("TESTE 4: seller insert");
+    Department department = new Department(2, null);
+    Seller newSeller = new Seller(
+            null,
+            "Greg",
+            "greg@gmail.com",
+            new Date(),
+            4000.0,
+            department
+    );
+    sellerDao.insert(newSeller);
+
+    System.out.println("Inserted, new ID = " + newSeller.getId());
 }

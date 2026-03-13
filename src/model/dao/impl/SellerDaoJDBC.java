@@ -6,10 +6,7 @@ import model.dao.SellerDao;
 import model.entities.Department;
 import model.entities.Seller;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +21,43 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public void insert(Seller payload) {
-        
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(
+                    "INSERT INTO seller "
+                            + "(Name, Email, BirthDate, BaseSalary, DepartmentId)"
+                            + "VALUES "
+                            + "(?, ?, ?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS
+            );
+
+            statement.setString(1, payload.getName());
+            statement.setString(2, payload.getEmail());
+            statement.setDate(3, new Date(payload.getBirthdate().getTime()));
+            statement.setDouble(4, payload.getBaseSalary());
+            statement.setInt(5, payload.getDepartment().getId());
+
+            int rowsAffected = statement.executeUpdate();
+
+            if(rowsAffected > 0) {
+                ResultSet generatedKeys = statement.getGeneratedKeys();
+
+                if(generatedKeys.next()) {
+                    int id = generatedKeys.getInt(1);
+
+                    payload.setId(id);
+
+                    DB.closeResultSet(generatedKeys);
+                }
+            } else {
+                throw new DbException("Unexpected error while inserting seller, no rows affected");
+            }
+        } catch (SQLException error) {
+            throw new DbException(error.getMessage());
+        } finally {
+            DB.closeStatement(statement);
+        }
     }
 
     @Override
@@ -126,7 +159,7 @@ public class SellerDaoJDBC implements SellerDao {
                             + "ON seller.DepartmentId = department.Id "
                             + "ORDER BY Name"
             );
-            
+
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
